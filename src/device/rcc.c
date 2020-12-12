@@ -63,3 +63,14 @@ void SysTick_Handler(void)
     /* Increment counter necessary in delay_ms()*/
     rcc_ms_ticks++;
 }
+
+/* Uses the SysTick Timer to generate an accurate time delay */
+void delay_ms(uint32_t ms)
+{
+    uint32_t curr_ticks;
+
+    curr_ticks = rcc_ms_ticks;
+
+    /* Wait */
+    while((rcc_ms_ticks - curr_ticks) < ms);
+}
