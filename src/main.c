@@ -13,8 +13,10 @@ int main(void)
     system_init();
 
      while (1) {
-        gpio_toggle(STATUS_LED_PORT, STATUS_LED_PIN);
-        delay_ms(1000);
+         if (secflag) {
+             gpio_toggle(STATUS_LED_PORT, STATUS_LED_PIN);
+             secflag = 0;
+         }
     }
 
     return 0;
