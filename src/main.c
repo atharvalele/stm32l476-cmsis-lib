@@ -12,11 +12,11 @@ int main(void)
 {
     system_init();
 
-     while (1) {
-         if (secflag) {
-             gpio_toggle(STATUS_LED_PORT, STATUS_LED_PIN);
-             secflag = 0;
-         }
+    while (1) {
+        if (secflag) {
+            gpio_toggle(STATUS_LED_PORT, STATUS_LED_PIN);
+            secflag = 0;
+        }
     }
 
     return 0;
