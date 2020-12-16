@@ -26,3 +26,5 @@
 
 void gpio_config(void);
 void gpio_toggle(GPIO_TypeDef *port, uint16_t pins);
+void gpio_set(GPIO_TypeDef *port, uint16_t pins);
+void gpio_clear(GPIO_TypeDef *port, uint16_t pins);

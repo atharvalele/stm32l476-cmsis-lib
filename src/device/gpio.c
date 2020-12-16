@@ -27,3 +27,15 @@ void gpio_toggle(GPIO_TypeDef *port, uint16_t pins)
     portval = port->ODR ;
     port->BSRR = (portval & pins) << 16 | (~portval & pins);
 }
+
+/* Turn ON all GPIO pins passed as an argument */
+void gpio_set(GPIO_TypeDef *port, uint16_t pins)
+{
+    port->BSRR |= pins;
+}
+
+/* Turn OFF all GPIO pins passed as an argument */
+void gpio_clear(GPIO_TypeDef *port, uint16_t pins)
+{
+    port->BRR |= pins;
+}
