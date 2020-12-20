@@ -13,10 +13,8 @@ void gpio_config(void)
     SET_BIT(RCC->AHB2ENR, RCC_AHB2ENR_GPIOEEN);
     /* set pin 8 to output mode */
     gpio_mode_set(STATUS_LED_PORT, STATUS_LED_PIN, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE);
-    /* set it as push-pull */
-    MODIFY_REG(STATUS_LED_PORT->OTYPER, GPIO_OTYPER_OT8, 0x00000000U);
-    /* set it to max speed */
-    MODIFY_REG(STATUS_LED_PORT->OSPEEDR, GPIO_OSPEEDER_OSPEEDR8, GPIO_OSPEEDER_OSPEEDR8_0 | GPIO_OSPEEDER_OSPEEDR8_1);
+    /* set it as push-pull & max speed output */
+    gpio_output_options_set(STATUS_LED_PORT, STATUS_LED_PIN, GPIO_OUTPUT_PUSHPULL, GPIO_OUTPUT_LOW_SPEED);
 }
 
 /* Toggle All GPIO pins passed as an argument */
@@ -56,6 +54,38 @@ void gpio_mode_set(GPIO_TypeDef *port, uint16_t pins, uint8_t mode, uint8_t pupd
     /* Apply the settings */
     port->MODER = moder;
     port->PUPDR = pupdr;
+}
+
+/* Set GPIO Output Type & Speed */
+void gpio_output_options_set(GPIO_TypeDef *port, uint16_t pins, uint8_t otype_sett,
+                             uint8_t ospeed_sett)
+{
+    uint8_t i;
+    uint32_t ospeedr;
+
+    /*
+     * We only wan't to change the pins that are passed,
+     * so keep the original values & mask the passed ones
+     */
+    ospeedr = port->OSPEEDR;
+
+    if (otype_sett == GPIO_OUTPUT_PUSHPULL) {
+        port->OTYPER &= ~pins;
+    } else {
+        port->OTYPER |= pins;
+    }
+
+    for (i = 0; i < 16; i++) {
+        if (((1 << i) & pins) == 0) {
+            continue;
+        }
+
+        ospeedr &= ~GPIO_SETT_MASK(i);
+        ospeedr |= GPIO_SETT(i, ospeed_sett);
+    }
+
+    /* Apply the settings */
+    port->OSPEEDR = ospeedr;
 }
 
 /* Turn ON all GPIO pins passed as an argument */

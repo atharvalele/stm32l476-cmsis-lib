@@ -39,9 +39,21 @@
 #define GPIO_PULL_UP        0x01
 #define GPIO_PULL_DOWN      0x03
 
+/* GPIO Output Type Defines */
+#define GPIO_OUTPUT_PUSHPULL    0x00
+#define GPIO_OUTPUT_OPENDRAIN   0x01
+
+/* GPIO Output Speed Defines */
+#define GPIO_OUTPUT_LOW_SPEED           0x00
+#define GPIO_OUTPUT_MED_SPEED           0x01
+#define GPIO_OUTPUT_HIGH_SPEED          0x02
+#define GPIO_OUTPUT_VERYHIGH_SPEED      0x03
+
 void gpio_config(void);
 void gpio_toggle(GPIO_TypeDef *port, uint16_t pins);
 void gpio_mode_set(GPIO_TypeDef *port, uint16_t pins, uint8_t mode,
                    uint8_t pupd_sett);
+void gpio_output_options_set(GPIO_TypeDef *port, uint16_t pins, uint8_t otype_sett,
+                             uint8_t ospeed_sett);
 void gpio_set(GPIO_TypeDef *port, uint16_t pins);
 void gpio_clear(GPIO_TypeDef *port, uint16_t pins);
