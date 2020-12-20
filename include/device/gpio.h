@@ -21,10 +21,27 @@
 #define GPIO15		(1 << 15)
 #define GPIO_ALL	0xFFFF
 
+/* GPIO Register Masks */
+#define GPIO_SETT(n, sett)  ((sett) << (2 * (n)))
+#define GPIO_SETT_MASK(n)   (0x03 << (2 * (n)))
+
 #define STATUS_LED_PORT GPIOE
 #define STATUS_LED_PIN  GPIO8
 
+/* GPIO Port Mode Defines */
+#define GPIO_MODE_INPUT     0x00
+#define GPIO_MODE_OUTPUT    0x01
+#define GPIO_MODE_AF        0x02
+#define GPIO_MODE_ANALOG    0x03
+
+/* GPIO Port Pull Up/Down Defines */
+#define GPIO_PUPD_NONE      0x00
+#define GPIO_PULL_UP        0x01
+#define GPIO_PULL_DOWN      0x03
+
 void gpio_config(void);
 void gpio_toggle(GPIO_TypeDef *port, uint16_t pins);
+void gpio_mode_set(GPIO_TypeDef *port, uint16_t pins, uint8_t mode,
+                   uint8_t pupd_sett);
 void gpio_set(GPIO_TypeDef *port, uint16_t pins);
 void gpio_clear(GPIO_TypeDef *port, uint16_t pins);
