@@ -88,6 +88,37 @@ void gpio_output_options_set(GPIO_TypeDef *port, uint16_t pins, uint8_t otype_se
     port->OSPEEDR = ospeedr;
 }
 
+/* Set all passed pins of a port as the alternate function selected*/
+void gpio_af_set(GPIO_TypeDef *port, uint16_t pins, uint8_t gpio_af)
+{
+    uint8_t i;
+    uint32_t portval;
+
+    /* Set the AFs of pins 0-7 */
+    portval = port->AFR[0];
+    for (i = 0; i < 8; i++) {
+        if (((1 << i) & pins) == 0) {
+            continue;
+        }
+
+        portval &= ~GPIO_AF_SETT_MASK(i);
+        portval |= GPIO_AF_SETT(i, gpio_af);
+    }
+    port->AFR[0] = portval;
+
+    /* Set the AFs of pins 8-15 */
+    portval = port->AFR[1];
+    for (i = 8; i < 16; i++) {
+        if (((1 << i) & pins) == 0) {
+            continue;
+        }
+
+        portval &= ~GPIO_AF_SETT_MASK(i);
+        portval |= GPIO_AF_SETT(i, gpio_af);
+    }
+    port->AFR[1] = portval;
+}
+
 /* Turn ON all GPIO pins passed as an argument */
 void gpio_set(GPIO_TypeDef *port, uint16_t pins)
 {
