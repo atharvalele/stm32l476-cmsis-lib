@@ -15,6 +15,12 @@ void gpio_config(void)
     gpio_mode_set(STATUS_LED_PORT, STATUS_LED_PIN, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE);
     /* set it as push-pull & max speed output */
     gpio_output_options_set(STATUS_LED_PORT, STATUS_LED_PIN, GPIO_OUTPUT_PUSHPULL, GPIO_OUTPUT_LOW_SPEED);
+
+    /* Setup GPIO for USART */
+    SET_BIT(RCC->AHB2ENR, RCC_AHB2ENR_GPIODEN);
+    gpio_mode_set(GPIOD, (GPIO5 | GPIO6), GPIO_MODE_AF, GPIO_PUPD_NONE);
+    gpio_output_options_set(GPIOD, GPIO5, GPIO_OUTPUT_PUSHPULL, GPIO_OUTPUT_VERYHIGH_SPEED);
+    gpio_af_set(GPIOD, (GPIO5 | GPIO6), GPIO_AF7);
 }
 
 /* Toggle All GPIO pins passed as an argument */
