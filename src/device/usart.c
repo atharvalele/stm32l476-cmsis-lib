@@ -150,7 +150,43 @@ void usart_str_send(struct usart_handle_t *usart, char *str)
     }
 }
 
+/* USART1 IRQ Handler */
+#ifdef USART1_ENABLED
+void USART1_IRQHandler()
+{
+    char outgoing_byte;
+    char incoming_byte;
+    uint16_t bytes;
+    /* Check which type of interrupt */
+
+    /* Tx Complete */
+    if (USART1->ISR & USART_ISR_TC) {
+        USART1->ICR |= USART_ICR_TCCF;
+    }
+    /* Tx shift register empty */
+    if (USART1->ISR & USART_ISR_TXE) {
+        if ((USART1->ISR & USART_ISR_TC) == 0)
+        {
+            /* Check if FIFO has any bytes to send out, else
+             * disable Tx interrupt to save CPU time
+             */
+            bytes = sw_fifo_read(&usart1_tx_fifo, &outgoing_byte, 1);
+            if (bytes != 0)
+                USART1->TDR = outgoing_byte;
+            else
+                CLEAR_BIT(USART1->CR1, USART_ISR_TXE);
+        }
+    }
+    /* Rx shift register not empty */
+    if (USART1->ISR & USART_ISR_RXNE) {
+        incoming_byte = USART1->RDR;
+        sw_fifo_write(&usart1_rx_fifo, &incoming_byte, 1);
+    }
+}
+#endif
+
 /* USART2 IRQ Handler */
+#ifdef USART2_ENABLED
 void USART2_IRQHandler()
 {
     char outgoing_byte;
@@ -182,3 +218,109 @@ void USART2_IRQHandler()
         sw_fifo_write(&usart2_rx_fifo, &incoming_byte, 1);
     }
 }
+#endif
+
+/* USART3 IRQ Handler */
+#ifdef USART3_ENABLED
+void USART3_IRQHandler()
+{
+    char outgoing_byte;
+    char incoming_byte;
+    uint16_t bytes;
+    /* Check which type of interrupt */
+
+    /* Tx Complete */
+    if (USART3->ISR & USART_ISR_TC) {
+        USART3->ICR |= USART_ICR_TCCF;
+    }
+    /* Tx shift register empty */
+    if (USART3->ISR & USART_ISR_TXE) {
+        if ((USART3->ISR & USART_ISR_TC) == 0)
+        {
+            /* Check if FIFO has any bytes to send out, else
+             * disable Tx interrupt to save CPU time
+             */
+            bytes = sw_fifo_read(&usart3_tx_fifo, &outgoing_byte, 1);
+            if (bytes != 0)
+                USART3->TDR = outgoing_byte;
+            else
+                CLEAR_BIT(USART3->CR1, USART_ISR_TXE);
+        }
+    }
+    /* Rx shift register not empty */
+    if (USART3->ISR & USART_ISR_RXNE) {
+        incoming_byte = USART3->RDR;
+        sw_fifo_write(&usart3_rx_fifo, &incoming_byte, 1);
+    }
+}
+#endif
+
+/* USART4 IRQ Handler */
+#ifdef USART4_ENABLED
+void USART4_IRQHandler()
+{
+    char outgoing_byte;
+    char incoming_byte;
+    uint16_t bytes;
+    /* Check which type of interrupt */
+
+    /* Tx Complete */
+    if (USART4->ISR & USART_ISR_TC) {
+        USART4->ICR |= USART_ICR_TCCF;
+    }
+    /* Tx shift register empty */
+    if (USART4->ISR & USART_ISR_TXE) {
+        if ((USART4->ISR & USART_ISR_TC) == 0)
+        {
+            /* Check if FIFO has any bytes to send out, else
+             * disable Tx interrupt to save CPU time
+             */
+            bytes = sw_fifo_read(&usart4_tx_fifo, &outgoing_byte, 1);
+            if (bytes != 0)
+                USART4->TDR = outgoing_byte;
+            else
+                CLEAR_BIT(USART4->CR1, USART_ISR_TXE);
+        }
+    }
+    /* Rx shift register not empty */
+    if (USART4->ISR & USART_ISR_RXNE) {
+        incoming_byte = USART4->RDR;
+        sw_fifo_write(&usart4_rx_fifo, &incoming_byte, 1);
+    }
+}
+#endif
+
+/* USART5 IRQ Handler */
+#ifdef USART5_ENABLED
+void USART5_IRQHandler()
+{
+    char outgoing_byte;
+    char incoming_byte;
+    uint16_t bytes;
+    /* Check which type of interrupt */
+
+    /* Tx Complete */
+    if (USART5->ISR & USART_ISR_TC) {
+        USART5->ICR |= USART_ICR_TCCF;
+    }
+    /* Tx shift register empty */
+    if (USART5->ISR & USART_ISR_TXE) {
+        if ((USART5->ISR & USART_ISR_TC) == 0)
+        {
+            /* Check if FIFO has any bytes to send out, else
+             * disable Tx interrupt to save CPU time
+             */
+            bytes = sw_fifo_read(&usart5_tx_fifo, &outgoing_byte, 1);
+            if (bytes != 0)
+                USART5->TDR = outgoing_byte;
+            else
+                CLEAR_BIT(USART5->CR1, USART_ISR_TXE);
+        }
+    }
+    /* Rx shift register not empty */
+    if (USART5->ISR & USART_ISR_RXNE) {
+        incoming_byte = USART5->RDR;
+        sw_fifo_write(&usart5_rx_fifo, &incoming_byte, 1);
+    }
+}
+#endif
