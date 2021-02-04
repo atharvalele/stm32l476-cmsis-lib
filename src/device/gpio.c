@@ -118,9 +118,12 @@ void gpio_af_set(GPIO_TypeDef *port, uint16_t pins, uint8_t gpio_af)
         if (((1 << i) & pins) == 0) {
             continue;
         }
-
-        portval &= ~GPIO_AF_SETT_MASK(i);
-        portval |= GPIO_AF_SETT(i, gpio_af);
+        /*
+         * We end up going beyond the 32 bit register after 4 pins.
+         * Mod the Pin with 8 to correctly for GPIO 8 to 15
+         */
+        portval &= ~GPIO_AF_SETT_MASK(i % 8);
+        portval |= GPIO_AF_SETT((i % 8), gpio_af);
     }
     port->AFR[1] = portval;
 }
