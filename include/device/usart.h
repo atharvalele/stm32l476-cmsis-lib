@@ -1,3 +1,5 @@
+#ifndef _USART_H_
+#define _USART_H_
 /*
  * USART: Universal asynchronous receiver-transmitter
  */
@@ -57,3 +59,5 @@ struct usart_handle_t {
 void usart_config(void);
 void usart_setup(struct usart_handle_t *usart);
 void usart_str_send(struct usart_handle_t *usart, char *str);
+
+#endif

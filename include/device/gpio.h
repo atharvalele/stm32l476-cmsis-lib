@@ -1,3 +1,5 @@
+#ifndef _GPIO_H_
+#define _GPIO_H_
 /*
  * GPIO: General Purpose Input/Output
  */
@@ -80,3 +82,5 @@ void gpio_output_options_set(GPIO_TypeDef *port, uint16_t pins, uint8_t otype_se
 void gpio_af_set(GPIO_TypeDef *port, uint16_t pins, uint8_t gpio_af);
 void gpio_set(GPIO_TypeDef *port, uint16_t pins);
 void gpio_clear(GPIO_TypeDef *port, uint16_t pins);
+
+#endif

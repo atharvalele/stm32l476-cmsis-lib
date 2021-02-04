@@ -1,3 +1,5 @@
+#ifndef _I2C_H_
+#define _I2C_H_
 /*
  * I2C : Inter-Intergrated Circuit
  */
@@ -54,3 +56,5 @@ void i2c_nack(struct i2c_handle_t *i2c);
 void i2c_set_address(struct i2c_handle_t *i2c, uint8_t addr);
 void i2c_transfer(struct i2c_handle_t *i2c, uint8_t num_bytes, uint8_t i2c_mode,
                    char reg, char *data);
+
+#endif
